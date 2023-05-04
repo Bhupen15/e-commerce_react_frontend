@@ -9,22 +9,18 @@ function Login() {
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
 
-    useEffect(() => {
-        const auth = localStorage.getItem("user");
-        if (auth) {
+    // useEffect(() => {
+    //     const auth = localStorage.getItem("user");
+    //     if (auth) {
 
-            navigate('/');
-        }
+    //         navigate('/');
+    //     }
 
-    })
-    const loginData = async () => {
-        console.log(email, password);
-        // type datatype = {
-        //     email: string;
-        //     password: string;
-        //     _id: string;
-        //     name: string;
-        // };
+    // })
+    const loginData = async (e: any) => {
+        e.preventDefault()
+        // console.log(email, password);
+
         let data = {
 
             'email': email,
@@ -35,15 +31,14 @@ function Login() {
         const result = await login(data);
 
 
-        if (result.data.email) {
+        localStorage.setItem("user", JSON.stringify(result.data.user));
+        localStorage.setItem("token", JSON.stringify(result.data.auth));
 
-            let localdata = {
-                'email': email,
-                'password': password,
-                '_id': result.data._id,
-                'name': result.data.name,
-            }
-            localStorage.setItem("user", JSON.stringify(localdata));
+        if (result.data.auth) {
+
+
+
+
             navigate('/');
         }
         else {
@@ -79,7 +74,7 @@ function Login() {
                                     </div>
 
                                     <div className="d-flex justify-content-center">
-                                        <button onClick={loginData} type="submit" className="btn btn-primary btn-lg ">Login</button>
+                                        <button onClick={(e) => loginData(e)} type="submit" className="btn btn-primary btn-lg ">Login</button>
                                     </div>
 
                                 </form>

@@ -14,6 +14,7 @@ export const register = async (data:object) =>{
 
 
 export const login = async (data:object) =>{
+    console.log("-----------data----",data)
 
     return axios.post(base_url()+ "login",data);
 }
@@ -26,8 +27,11 @@ export const addProduct = async (data:object) =>{
 }
 
 export const productList = async () =>{
+   
+    const getToken  = localStorage.getItem("token");
+   
 
-    return axios.get(base_url()+ "product-list");
+    return axios.get(base_url()+ "product-list" , {headers: {Authorization: getToken}} );
 }
 export const deleteproduct = async (id: any) =>{
 

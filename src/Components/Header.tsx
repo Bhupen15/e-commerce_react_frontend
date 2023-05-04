@@ -12,6 +12,8 @@ function Header() {
     const navigate = useNavigate();
 
     let auth = localStorage.getItem("user");
+    let token = localStorage.getItem("token");
+    
 
     const logout = () => {
         localStorage.clear();
@@ -45,8 +47,8 @@ function Header() {
                                     <Nav.Link >Profile</Nav.Link>
                                 </LinkContainer>}
                                 <LinkContainer onClick={logout} to="/register">
-                                    <Nav.Link >Logout ({JSON.parse(auth).name})</Nav.Link>
-                                    
+                                    <Nav.Link >Logout ({JSON.parse(auth).name}) </Nav.Link>
+                                    {/* ({JSON.parse(auth).name}) */}
                                 </LinkContainer></>
 
                                 : <>   <LinkContainer to="/login">

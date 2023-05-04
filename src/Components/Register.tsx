@@ -28,6 +28,7 @@ const auth = localStorage.getItem("user");
 
      
      localStorage.setItem("user", JSON.stringify(data));
+     localStorage.setItem("token", JSON.stringify(result.data.auth));
 
         if (result) {
             navigate('/');
