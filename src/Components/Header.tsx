@@ -1,12 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { Container, Nav, Navbar } from "react-bootstrap";
+// import env from "react-dotenv";
 
 
 import { Col, Modal, ModalBody, ModalHeader, Row } from 'reactstrap';
 import { LinkContainer } from 'react-router-bootstrap';
-import { useNavigate } from "react-router-dom";
-import { imageUpload } from "../Services/AdminServices";
+import { useLocation, useNavigate } from "react-router-dom";
+import { getme, imageUpload } from "../Services/AdminServices";
 
 
 
@@ -16,7 +17,39 @@ function Header() {
     const [open, setOpen] = useState(false);
 
 
-    let auth = localStorage.getItem("user");
+    let storage = localStorage.getItem("user");
+    let token = localStorage.getItem("token");
+
+    const path = useLocation();
+
+    const [auth, setAuth] = useState({
+        name: "",
+        image: ""
+    });
+
+    // const pathname = path.pathname;
+    useEffect(() => {
+        if (storage) {
+            loaduser()
+        }
+        else {
+            setAuth({
+                name: "",
+                image: ""
+            })
+            navigate("/login");
+        }
+
+    }, [open, path.pathname])
+
+
+    const loaduser = async () => {
+        let result = await getme();
+        setAuth(result.data);
+        // console.log("this is result", result);
+
+    }
+
 
 
     const submitHandler = async (e: any) => {
@@ -24,6 +57,7 @@ function Header() {
         let data = new FormData(e.target);
 
         const result = await imageUpload(data);
+        console.log(result);
         if (result) {
 
             setOpen(false);
@@ -37,6 +71,9 @@ function Header() {
     }
     return (
         <>
+            {/* <pre>{process.env.REACT_APP_API_URL}</pre> */}
+
+
             <Modal isOpen={open} size='md' toggle={() => setOpen(!open)} >
                 <ModalHeader >Update details</ModalHeader>
 
@@ -77,9 +114,9 @@ function Header() {
 
 
                         <Nav className="me-auto">
-                            {auth ? <>
+                            {auth.name !== "" ? <>
                                 <Nav.Link onClick={() => { setOpen(!open) }} >
-                                    <img src={""} style={{ borderRadius: "100%", width: "30px ", height: "30px " }} alt="" />
+                                    <img src={process.env.REACT_APP_API_URL + auth.image} style={{ borderRadius: "100%", width: "30px ", height: "30px " }} alt="" />
                                     {/* src={user.image} */}
                                 </Nav.Link>
                                 {<LinkContainer to="/">
@@ -94,7 +131,7 @@ function Header() {
                                     <Nav.Link >Profile</Nav.Link>
                                 </LinkContainer>}
                                 <LinkContainer onClick={logout} to="/register">
-                                    <Nav.Link >Logout ({JSON.parse(auth).name}) </Nav.Link>
+                                    <Nav.Link >Logout ({auth.name}) </Nav.Link>
                                     {/* ({JSON.parse(auth).name}) */}
                                 </LinkContainer></>
 

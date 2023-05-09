@@ -3,6 +3,7 @@ import { deleteproduct, productList, searchProduct, singleproduct, updateproduct
 
 import Table from 'react-bootstrap/Table';
 import { Col, Modal, ModalBody, ModalHeader, Row } from 'reactstrap';
+import { useNavigate } from 'react-router-dom';
 
 
 function ProductList() {
@@ -19,14 +20,22 @@ function ProductList() {
     company: ""
   })
 
+  // const auth = localStorage.getItem("user");
+  const token = localStorage.getItem("token");
+  const user = localStorage.getItem("user");
+
   // This function print product list
   const getProducts = async () => {
 
     let result: any = await productList();
     setProducts(result.data);
   }
-
+  const navigate=useNavigate()
   useEffect(() => {
+    if(!(token)){
+      navigate('/login')
+
+    }
     getProducts();
   }, [open])
 
@@ -84,6 +93,7 @@ function ProductList() {
   return (
 
     <>
+     
       <h1 className='container'>Product list</h1>
       <div className="  align-items-center my-2 container">
 
@@ -106,7 +116,7 @@ function ProductList() {
           </tr>
         </thead>
         <tbody>
-          {products.length>0 ? products.map((product: any, index) => {
+          {products.length > 0 ? products.map((product: any, index) => {
 
             return (
               <>
@@ -123,7 +133,7 @@ function ProductList() {
 
               </>
             )
-          }): <h2>No result found</h2>}
+          }) : <h2>No result found</h2>}
         </tbody>
 
       </Table>
@@ -166,7 +176,7 @@ function ProductList() {
           </form>
         </ModalBody>
       </Modal>
-
+     
     </>
   )
 }

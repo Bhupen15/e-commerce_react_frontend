@@ -33,8 +33,8 @@ function Login() {
 
         localStorage.setItem("user", JSON.stringify(result.data.user));
         localStorage.setItem("token", JSON.stringify(result.data.auth));
-
-        if (result.data.auth) {
+    //   console.log(result.data);
+        if ((result.data.auth)&&(result.data.user)) {
 
 
 

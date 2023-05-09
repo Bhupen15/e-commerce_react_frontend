@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { redirect } from 'react-router-dom';
+
 
 
 
@@ -30,7 +30,7 @@ export const addProduct = async (data:object) =>{
 
 export const productList = async () =>{
    const token =localStorage.getItem("token") as string;
-   
+ 
     const getToken  =`bearer `+ JSON.parse(token);
     return axios.get(base_url()+ "product-list" , {headers: {Authorization: getToken}} );
  
@@ -60,13 +60,22 @@ export const searchProduct = async (key: any) =>{
     const token =localStorage.getItem("token") as string;
    
     const getToken  =`bearer `+ JSON.parse(token);
+
     return axios.get(base_url()+ `search/${key}`, {headers: {Authorization: getToken}});
 }
 export const imageUpload = async (data :any) =>{
-    // const token =localStorage.getItem("token") as string;
+    const token =localStorage.getItem("token") as string;
    
-    // const getToken  =`bearer `+ JSON.parse(token);
+    const getToken  =`bearer `+ JSON.parse(token);
     // ,{headers: {Authorization: getToken}}
-    return axios.post(base_url()+ `upload-image`,data );
+    return axios.post(base_url()+ `upload-image`,data ,{headers: {Authorization: getToken}});
+
+}
+export const getme = async () =>{
+    const token =localStorage.getItem("token") as string;
+   
+    const getToken  =`bearer `+ JSON.parse(token);
+    // ,{headers: {Authorization: getToken}}
+    return axios.get(base_url()+ `me` ,{headers: {Authorization: getToken}});
 
 }

@@ -10,7 +10,10 @@ function Register() {
 
   useEffect(() => {
 const auth = localStorage.getItem("user");
-  if(auth){
+const token = localStorage.getItem("token");
+console.log(token)
+  if(auth && token){
+
 
     navigate('/');
   }
@@ -33,6 +36,8 @@ const auth = localStorage.getItem("user");
         if (result) {
             navigate('/');
         }
+
+       
 
     }
 
