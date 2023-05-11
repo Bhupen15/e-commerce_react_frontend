@@ -18,7 +18,7 @@ function Header() {
 
 
     let storage = localStorage.getItem("user");
-    let token = localStorage.getItem("token");
+  
 
     const path = useLocation();
 
@@ -39,7 +39,7 @@ function Header() {
             })
             navigate("/login");
         }
-
+//  console.log(path.pathname);
     }, [open, path.pathname])
 
 

@@ -8,18 +8,20 @@ function Register() {
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
 
-  useEffect(() => {
-const auth = localStorage.getItem("user");
-const token = localStorage.getItem("token");
-console.log(token)
-  if(auth && token){
+    useEffect(() => {
+        const auth = localStorage.getItem("user");
+        const token = localStorage.getItem("token");
+        console.log(token)
+        if (auth) {
 
 
-    navigate('/');
-  }
-   
-  })
-  
+            navigate('/');
+        } else {
+            navigate("/register")
+        }
+
+    },[])
+
     const collectData = async () => {
         console.log(name, email, password);
         let data = {
@@ -29,15 +31,15 @@ console.log(token)
         }
         const result = await register(data);
 
-     
-     localStorage.setItem("user", JSON.stringify(data));
-     localStorage.setItem("token", JSON.stringify(result.data.auth));
+
+        localStorage.setItem("user", JSON.stringify(data));
+        localStorage.setItem("token", JSON.stringify(result.data.auth));
 
         if (result) {
             navigate('/');
         }
 
-       
+
 
     }
 

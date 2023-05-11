@@ -12,19 +12,19 @@ function AddProduct() {
 
         // console.log(name, price, category, company, userId);
 
-        let lsdata: any = localStorage.getItem("user");
+        // let lsdata: any = localStorage.getItem("user");
         // console.log(lsdata, "line 15");
 
-        const userId = JSON.parse(lsdata)._id;
+        // const userId = JSON.parse(lsdata)._id;
 
-        console.log(userId);
+        // console.log(userId);
 
         let data = {
             'name': name,
             'price': price,
             'category': category,
             'company': company,
-            'userId': userId
+            // 'userId': userId
         }
         const result = await addProduct(data);
         console.log(result);
