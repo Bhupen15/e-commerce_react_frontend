@@ -6,11 +6,15 @@ import { Col, Modal, ModalBody, ModalHeader, Row } from 'reactstrap';
 import { useNavigate } from 'react-router-dom';
 
 
+
 function ProductList() {
 
   const [products, setProducts] = useState([]);
 
   const [open, setOpen] = useState(false);
+  const [page, setPage] = useState(1);
+  const [totalProducts, setTotalProducts] = useState(0);
+  // console.log(page);
 
   const [val, setval] = useState({
     _id: "",
@@ -22,21 +26,28 @@ function ProductList() {
 
   // const auth = localStorage.getItem("user");
   const token = localStorage.getItem("token");
-  const user = localStorage.getItem("user");
+  // const user = localStorage.getItem("user");
 
   // This function print product list
-  const getProducts = async () => {
+  const getProducts = async (page: number) => {
+    setPage(page)
 
-    let result: any = await productList();
-    setProducts(result.data);
+
+
+
+    let result: any = await productList(page);
+    setProducts(result.data.products);
+    setTotalProducts(result.data.totalProducts);
+    // console.log(result.data.products);
+    // console.log(result.data.totalProducts);
   }
-  const navigate=useNavigate()
+  const navigate = useNavigate()
   useEffect(() => {
-    if(!(token)){
+    if (!(token)) {
       navigate('/login')
 
     }
-    getProducts();
+    getProducts(page);
   }, [open])
 
   //This function delete single product
@@ -44,9 +55,15 @@ function ProductList() {
     let result = await deleteproduct(id);
     if (result) {
       alert("Record is deleted");
-      getProducts();
-    }
+      // (page >= Math.ceil(totalProducts / 3)) ? true : false
+      if (page * 3 >= Math.ceil(totalProducts / 3)) {
 
+        getProducts(page - 1)
+
+      } else
+        getProducts(page);
+    }
+    
   }
 
   //This function print single user
@@ -87,13 +104,13 @@ function ProductList() {
       }
     }
     else {
-      getProducts();
+      getProducts(page);
     }
   }
   return (
 
     <>
-     
+
       <h1 className='container'>Product list</h1>
       <div className="  align-items-center my-2 container">
 
@@ -137,7 +154,27 @@ function ProductList() {
         </tbody>
 
       </Table>
+      {/* onClick={()=>previousPage()} */}
+      <button onClick={() => {
 
+        if (page > 1) {
+
+          getProducts(page - 1)
+        }
+      }} className="btn btn-primary  mx-2 my-2">Previous</button>
+
+
+
+      <button onClick={() => {
+
+        if (page <= Math.ceil(totalProducts / 3)) {
+
+          getProducts(page + 1)
+
+        }
+      }}
+        disabled={(page >= Math.ceil(totalProducts / 3)) ? true : false}
+        className="btn btn-primary  ">Next</button>
       <Modal isOpen={open} size='md' toggle={() => setOpen(!open)} >
         <ModalHeader >Update details</ModalHeader>
 
@@ -173,10 +210,13 @@ function ProductList() {
                 </div>
               </Col>
             </Row>
+            {/* <Pagination count={10} color="primary" /> */}
+
+
           </form>
         </ModalBody>
       </Modal>
-     
+
     </>
   )
 }

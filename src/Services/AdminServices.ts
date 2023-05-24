@@ -28,11 +28,11 @@ export const addProduct = async (data:object) =>{
     return axios.post(base_url()+ "add-product",data, {headers: {Authorization: getToken}});
 }
 
-export const productList = async () =>{
+export const productList = async (page: number) =>{
    const token =localStorage.getItem("token") as string;
  
     const getToken  =`bearer `+ JSON.parse(token);
-    return axios.get(base_url()+ "product-list" , {headers: {Authorization: getToken}} );
+    return axios.get(base_url()+ `product-list?page=${page}` , {headers: {Authorization: getToken}} );
  
 
     
@@ -61,7 +61,7 @@ export const searchProduct = async (key: any) =>{
    
     const getToken  =`bearer `+ JSON.parse(token);
 
-    return axios.get(base_url()+ `search/${key}`, {headers: {Authorization: getToken}});
+    return axios.get(base_url()+ `search?key=${key}`, {headers: {Authorization: getToken}});
 }
 export const imageUpload = async (data :any) =>{
     const token =localStorage.getItem("token") as string;

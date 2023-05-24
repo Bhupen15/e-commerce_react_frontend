@@ -18,7 +18,7 @@ function Header() {
 
 
     let storage = localStorage.getItem("user");
-  
+
 
     const path = useLocation();
 
@@ -39,7 +39,7 @@ function Header() {
             })
             navigate("/login");
         }
-//  console.log(path.pathname);
+        //  console.log(path.pathname);
     }, [open, path.pathname])
 
 
@@ -53,11 +53,20 @@ function Header() {
 
 
     const submitHandler = async (e: any) => {
+        console.log(e);
+        console.log(e.target);
+        console.log(e.target[2]);
+        console.log(e.target[0]);
+        console.log(e.target[0].value);
+        // console.log(e.preventDefault);
+        // console.log(e.target)
+        // console.log(e.target.value)
         e.preventDefault();
         let data = new FormData(e.target);
 
+        // console.log("This is data", data.append);
         const result = await imageUpload(data);
-        console.log(result);
+        // console.log("this is result", result);
         if (result) {
 
             setOpen(false);
@@ -125,6 +134,9 @@ function Header() {
 
                                 {<LinkContainer to="/add">
                                     <Nav.Link >Add Product</Nav.Link>
+                                </LinkContainer>}
+                                {<LinkContainer to="/input">
+                                    <Nav.Link >Add email</Nav.Link>
                                 </LinkContainer>}
 
                                 {<LinkContainer to="/profile">
